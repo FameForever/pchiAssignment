@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+import socket
+import sys
+
+
+def p2p(hostname, port, content):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.bind(('', port))
+    s.connect((hostname, port))
+    s.sendall(content)
+    s.shutdown(socket.SHUT_WR)
+    while 1:
+        data = s.recv(1024)
+        if not data:
+            break
+        print(data)
+    s.close()
+
+
+def main():
+    toSend = sys.stdin.read()
+    p2p("127.0.0.1", 8333, str.encode(toSend))
+
+
+if __name__ == "__main__":
+    main()
