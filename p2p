@@ -22,7 +22,7 @@ class Connection:
             data = conn.recv(1024)
             if not data:
                 break
-            print(bytes.decode(data))
+            print(bytes.decode(data), end="", flush=True)
         conn.close()
 
 
